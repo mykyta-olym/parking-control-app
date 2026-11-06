@@ -1,0 +1,47 @@
+services:
+  backend:
+    image: ${IMAGE:-parking-control-backend:latest}
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DB_URL: ${DB_URL:-sqlite:////app/SQLite/prod.db}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      ADMIN_API_KEYS: ${ADMIN_API_KEYS:-[]}
+      APP_JWT_SECRET: ${APP_JWT_SECRET:-}
+      APP_JWT_ISS: ${APP_JWT_ISS:-}
+      APP_JWT_AUD: ${APP_JWT_AUD:-}
+      APP_TOKEN_TTL_SECONDS: ${APP_TOKEN_TTL_SECONDS:-}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - backend_data:/app/SQLite
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/parking').read()\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ai-camera:
+    build:
+      context: ../../ai-camera
+      dockerfile: Dockerfile
+    image: ai-camera:latest
+    env_file:
+      - ../../ai-camera/.env
+    environment:
+      API_URL: ${API_URL:-http://backend:8000/admin/ingest/snapshot}
+      API_KEY: ${API_KEY:-}
+    volumes:
+      - ../../ai-camera/cameras_config.json:/app/cameras_config.json:ro
+      - ../../ai-camera/mask1.png:/app/mask1.png:ro
+      - ../../ai-camera/mask2.png:/app/mask2.png:ro
+      # Optional: mount weights if present
+      # - ../../ai-camera/yolov8x.pt:/app/yolov8x.pt:ro
+    restart: unless-stopped
+
+volumes:
+  backend_data:

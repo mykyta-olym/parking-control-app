@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.log
+.venv/
+env/
+venv/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.avi
+
+# Keep weights/config unless explicitly ignored
+# weights/

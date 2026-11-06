@@ -1,0 +1,35 @@
+# IDE / editors
+.idea/
+.vscode/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environments
+.venv/
+venv/
+backend/.venv/
+backend/.venvWindows/
+
+# Env files
+.env
+backend/.env
+backend/.env.local
+backend/.env.*
+
+# SQLite artifacts
+backend/SQLite/*.db
+backend/SQLite/*.sqlite3
+backend/SQLite/*.db-journal
+
+# Logs
+*.log
+
+# Frontend artifacts
+frontend/node_modules/
+frontend/dist/
+
+# Misc
+.DS_Store

@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - backend/deploy/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/SQLite:/app/SQLite
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    environment:
+      EXPO_NO_INTERACTIVE: "1"
+      EXPO_NO_TELEMETRY: "1"
+      EXPO_USE_DEV_SERVER: "1"
+      EXPO_DEVTOOLS_LISTEN_ADDRESS: "0.0.0.0"
+      EXPO_TOKEN: "xYot8AQMOaqYSTslVZ6was3YkAPS4WPX54upPu-I"
+      EXPO_PUBLIC_API_URL: "http://147.232.205.122:8000/api/v1"
+      EXPO_PUBLIC_ADMIN_API_URL: "http://147.232.205.122:8000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  ai-camera:
+    build:
+      context: ./ai-camera
+      dockerfile: Dockerfile
+    env_file:
+      - ./ai-camera/.env
+    volumes:
+      - ./ai-camera/cameras_config.json:/app/cameras_config.json:ro
+      - ./ai-camera/mask1.png:/app/mask1.png:ro
+      - ./ai-camera/mask2.png:/app/mask2.png:ro
+      - ./ai-camera/mask3.png:/app/mask3.png:ro
+      # - ./ai-camera/yolov8x.pt:/app/yolov8x.pt:ro
+      # - ./ai-camera/weights:/app/weights:ro
+    depends_on:
+      - backend
+    restart: unless-stopped

@@ -1,0 +1,36 @@
+{
+  "cameras": [
+    {
+      "id": "cam1",
+      "snapshot_url": "http://147.232.79.119:80/jpg/image.jpg",
+      "username": "stream4",
+      "password": "AKLbPC",
+      "model_path": "yolov8x.pt",
+      "conf": 0.25,
+      "mask_path": "mask1.png",
+      "zone_id": "L9B-parking"
+    },
+    {
+      "id": "cam2",
+      "snapshot_url": "http://147.232.79.105:80/jpg/image.jpg",
+      "username": "stream4",
+      "password": "AKLbPC",
+      "model_path": "yolov8x.pt",
+      "conf": 0.25,
+      "mask_path": "mask2.png",
+      "zone_id": "BN32-parking"
+
+    },
+    {
+      "id": "cam3",
+      "snapshot_url": "http://147.232.79.118:80/jpg/image.jpg",
+      "username": "stream4",
+      "password": "AKLbPC",
+      "model_path": "yolov8x.pt",
+      "conf": 0.41,
+      "mask_path": "mask3.png",
+      "zone_id": "Komenskho19-parking"
+    }
+
+  ]
+}

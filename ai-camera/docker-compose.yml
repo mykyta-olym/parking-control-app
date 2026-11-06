@@ -1,0 +1,21 @@
+services:
+  ai-camera:
+    build: .
+    image: ai-camera:latest
+    env_file:
+      - .env
+    environment:
+      # Defaults let the service talk to the backend container if present
+      API_URL: ${API_URL:-http://backend:8000/admin/ingest/snapshot}
+      API_KEY: ${API_KEY:-}
+    volumes:
+      # Hot-reload camera config and masks without rebuilding
+      - ./cameras_config.json:/app/cameras_config.json:ro
+      - ./mask1.png:/app/mask1.png:ro
+      - ./mask2.png:/app/mask2.png:ro
+      - ./mask3.png:/app/mask3.png:ro
+      # Optional: mount weights to avoid downloading every run (uncomment and add the file)
+      # - ./yolov8x.pt:/app/yolov8x.pt:ro
+      # Optional: keep a weights directory if you have multiple models
+      # - ./weights:/app/weights:ro
+    restart: unless-stopped
